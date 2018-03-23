@@ -11,8 +11,8 @@ exports.createTableSvc = () => {
 
 
 exports.insertEntities = (eventsArray) => {
-    eventsArray.forEach(event => {
-        event.PartitionKey = entGen.String(event.side);
+    eventsArray.forEach(event => {        
+        event.PartitionKey = entGen.String(event.timestamp.slice(17, 19));
         event.RowKey = entGen.String(event.trdMatchID);
 
         delete event.foreignNotional;
@@ -20,11 +20,13 @@ exports.insertEntities = (eventsArray) => {
         delete event.homeNotional;
         delete event.trdMatchID;
         delete event.tickDirection;
-        delete event.side;
-        //console.log(event);
+        event.ordertime = event.timestamp;
+        delete event.timestamp;
+        console.log(event);
         //console.log(event.PartitionKey);
+        
         tableSvc.insertEntity('bitmex', event, function (error, result, response) {
             if (error) console.log(error);
-        });
+        }); 
     });
 };
