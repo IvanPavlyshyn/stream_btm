@@ -12,7 +12,7 @@ exports.createTableSvc = () => {
 
 exports.insertEntities = (eventsArray) => {
     eventsArray.forEach(event => {        
-        event.PartitionKey = entGen.String(event.timestamp.slice(17, 19));
+        event.PartitionKey = entGen.String(getRandomInt(1,6));
         event.RowKey = entGen.String(event.trdMatchID);
 
         delete event.foreignNotional;
@@ -30,3 +30,7 @@ exports.insertEntities = (eventsArray) => {
         }); 
     });
 };
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
