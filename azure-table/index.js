@@ -3,6 +3,7 @@ const azure = require('azure-storage'),
     entGen = azure.TableUtilities.entityGenerator;
 
 var tableSvc = null;
+var counter = 1;
 
 
 exports.createTableSvc = () => {
@@ -11,8 +12,10 @@ exports.createTableSvc = () => {
 
 
 exports.insertEntities = (eventsArray) => {
-    eventsArray.forEach(event => {        
-        event.PartitionKey = entGen.String(getRandomInt(1,6));
+    eventsArray.forEach(event => {    
+        if(counter > 5) counter = 1;
+        
+        event.PartitionKey = entGen.String(counter.toString());
         event.RowKey = entGen.String(event.trdMatchID);
 
         delete event.foreignNotional;
@@ -23,6 +26,7 @@ exports.insertEntities = (eventsArray) => {
         event.ordertime = event.timestamp;
         delete event.timestamp;
         console.log(event);
+        counter++;
         //console.log(event.PartitionKey);
         
         tableSvc.insertEntity('bitmex', event, function (error, result, response) {

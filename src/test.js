@@ -4,4 +4,4 @@ function getRandomInt(min, max) {
 
 setInterval(() => {
     console.log(getRandomInt(1,6));
-}, 5000);
+}, 500);
