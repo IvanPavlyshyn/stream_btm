@@ -5,7 +5,7 @@ const server = express();
 const BitMEXClient = require('bitmex-realtime-api');
 // See 'options' reference below
 const client = new BitMEXClient({
-    testnet: false
+    testnet: true
 });
 
 
